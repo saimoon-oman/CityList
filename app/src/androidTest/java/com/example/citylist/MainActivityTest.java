@@ -25,6 +25,7 @@ import org.junit.runner.RunWith;
 @LargeTest
 public class MainActivityTest {
 
+
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule =
             new ActivityScenarioRule<>(MainActivity.class);
@@ -74,6 +75,31 @@ public class MainActivityTest {
 
         onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(0).perform(click()); //Check the content on the list - no content in this case
         Espresso.pressBack(); //Back button
+    }
+
+    @Test
+    public void testShowActivity() {
+        onView(withText("CityList")).check(matches(isDisplayed()));
+
+        onView(withId(R.id.button_add)).perform(click());
+        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Dhaka"));
+        onView(withId(R.id.button_confirm)).perform(click());
+
+        onView(withId(R.id.button_add)).perform(click());
+        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Bogura"));
+        onView(withId(R.id.button_confirm)).perform(click());
+
+        onView(withId(R.id.button_add)).perform(click());
+        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Rangpur"));
+        onView(withId(R.id.button_confirm)).perform(click());
+
+        onData(anything()).inAdapterView(withId(R.id.city_list)).atPosition(0).perform(click());
+
+        onView(withId(R.id.activityShowActivity)).check(matches(isDisplayed()));
+        onView(withText("Dhaka")).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonBack)).perform(click());
+        onView(withId(R.id.activityMain)).check(matches(isDisplayed()));
+
     }
 
 }
